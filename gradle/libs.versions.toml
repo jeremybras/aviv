@@ -1,0 +1,57 @@
+[versions]
+activityCompose = "1.9.3"
+agp = "8.7.2"
+assertjCore = "3.10.0"
+compose = "1.0.0-beta01"
+composeBom = "2024.11.00"
+converterGson = "2.9.0"
+coreKtx = "1.15.0"
+hiltAndroid = "2.51.1"
+hiltCompiler = "2.51.1"
+hiltNavigationCompose = "1.2.0"
+hiltPlugin = "2.51.1"
+junitJupiterApi = "5.11.2"
+junitJupiterEngine = "5.11.2"
+junitVersion = "4.13.2"
+kotlin = "2.0.21"
+kotlinxCoroutinesTest = "1.7.3"
+lifecycleRuntimeKtx = "2.8.7"
+mockitoJunitJupiter = "5.14.2"
+mockwebserver = "4.11.0"
+navigationCompose = "2.8.4"
+retrofit = "2.9.0"
+kotlin-kapt = "1.8.0"
+
+[libraries]
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltNavigationCompose" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-material3 = { module = "androidx.compose.material3:material3" }
+androidx-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+androidx-ui = { module = "androidx.compose.ui:ui" }
+androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertjCore" }
+compose = { module = "com.github.bumptech.glide:compose", version.ref = "compose" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
+junit-junit = { module = "junit:junit", version.ref = "junitVersion" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junitJupiterEngine" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitJupiterApi" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockitoJunitJupiter" }
+mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockwebserver" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltPlugin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin-kapt" }
