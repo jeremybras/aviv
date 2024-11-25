@@ -14,13 +14,10 @@ import javax.inject.Named
 @Module
 @InstallIn(SingletonComponent::class)
 class MainModule {
-
     @Provides
     fun provideResources(
         @ApplicationContext appContext: Context,
-    ): Resources {
-        return appContext.resources
-    }
+    ): Resources = appContext.resources
 
     @Named("ioDispatcher")
     @Provides

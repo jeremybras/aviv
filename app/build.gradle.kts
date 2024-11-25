@@ -49,6 +49,8 @@ android {
     }
 }
 
+val mockitoAgent = configurations.create("mockitoAgent")
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -86,8 +88,11 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.assertj.core)
     testImplementation(libs.mockwebserver)
+    testImplementation(libs.mockito)
+    mockitoAgent(libs.mockito) { isTransitive = false }
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    jvmArgs("-javaagent:${mockitoAgent.asPath}")
 }

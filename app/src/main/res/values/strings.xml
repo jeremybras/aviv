@@ -9,4 +9,7 @@
     </plurals>
     <string name="retry_button">Retry</string>
     <string name="generic_error_message">An error occurred</string>
+    <string name="repository_failure">Erreur lors du chargement</string>
+    <string name="retry">Retry</string>
+    <string name="area">%sm²</string>
 </resources>

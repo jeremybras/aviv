@@ -14,7 +14,11 @@ internal fun AvivNavigation() {
         startDestination = "home",
     ) {
         composable("home") {
-            HomeScreen()
+            HomeScreen(
+                onListing = { listingId ->
+                    // TODO Go to detail
+                },
+            )
         }
     }
 }
