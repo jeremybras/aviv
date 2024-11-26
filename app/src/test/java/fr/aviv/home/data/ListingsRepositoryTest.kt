@@ -1,5 +1,6 @@
 package fr.aviv.home.data
 
+import fr.aviv.home.domain.ListingsResult
 import fr.aviv.testutils.enqueue
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -67,7 +68,7 @@ class ListingsRepositoryTest {
                 )
             )
         )
-        val expectedResult = mock(ListingsResponse.Success::class.java)
+        val expectedResult = mock(ListingsResult.Success::class.java)
         given(transformer.transformJsonToEntity(jsonResponse)).willReturn(expectedResult)
 
         // When
@@ -86,7 +87,7 @@ class ListingsRepositoryTest {
         val result = repository.loadListings()
 
         // Then
-        assertEquals(ListingsResponse.Failure, result)
+        assertEquals(ListingsResult.Error, result)
     }
 
     @Test
@@ -102,6 +103,6 @@ class ListingsRepositoryTest {
         val result = repository.loadListings()
 
         // Then
-        assertEquals(ListingsResponse.Failure, result)
+        assertEquals(ListingsResult.Error, result)
     }
 }

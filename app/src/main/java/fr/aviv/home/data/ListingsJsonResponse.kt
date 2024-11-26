@@ -16,7 +16,3 @@ data class ListingsJsonResponse(
         val rooms: Int,
     )
 }
-
-open class RepositoryException : Exception()
-
-class ListingsException : RepositoryException()

@@ -12,6 +12,9 @@ import androidx.compose.ui.Modifier
 fun DetailScreen(
     listingId: Int,
 ) {
+
+
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
