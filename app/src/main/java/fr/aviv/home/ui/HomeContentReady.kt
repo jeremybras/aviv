@@ -60,6 +60,7 @@ private fun Listing(
             .padding(top = 16.dp)
             .padding(horizontal = 16.dp),
         onClick = {
+            onListing(listing.id)
         },
     ) {
         Column {
