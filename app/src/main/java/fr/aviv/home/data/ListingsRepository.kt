@@ -14,7 +14,13 @@ class ListingsRepository @Inject constructor(
             val result = request.execute()
             if (result.isSuccessful) {
                 result.body()?.let { body ->
-                    return transformer.transformJsonToEntity(body)
+                    return ListingsResult.Success(
+                        items = body.items.map { item ->
+                            transformer.transformJsonToEntity(
+                                item = item,
+                            )
+                        }
+                    )
                 } ?: ListingsResult.Error
             } else {
                 ListingsResult.Error

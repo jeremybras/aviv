@@ -11,10 +11,10 @@ import fr.aviv.home.presentation.ListingsViewModel
 fun HomeScreen(onListing: (Int) -> Unit) {
 
     val viewModel: ListingsViewModel = hiltViewModel()
-
     LaunchedEffect(Unit) {
         viewModel.loadListings()
     }
+
     when (val listingsUiState = viewModel.listingsUiState.collectAsStateWithLifecycle().value) {
         ListingsUiState.Loading -> {
             HomeContentLoading()

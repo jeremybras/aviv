@@ -1,10 +1,12 @@
-package fr.aviv.home.presentation
+package fr.aviv.details.presentation
 
 import android.content.res.Resources
 import fr.aviv.R
+import fr.aviv.details.domain.ListingDetailInteractor
+import fr.aviv.details.domain.ListingDetailResult
 import fr.aviv.home.domain.Listing
-import fr.aviv.home.domain.ListingsInteractor
-import fr.aviv.home.domain.ListingsResult
+import fr.aviv.home.presentation.ListingBuilder
+import fr.aviv.home.presentation.ListingDisplayModel
 import fr.aviv.testutils.BaseCoroutinesTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -13,17 +15,16 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.then
-import org.mockito.BDDMockito.times
 import org.mockito.Mock
 import org.mockito.Mockito.mock
 import org.mockito.junit.jupiter.MockitoExtension
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @ExtendWith(MockitoExtension::class)
-class ListingsViewModelTest : BaseCoroutinesTest() {
+class ListingDetailViewModelTest : BaseCoroutinesTest() {
 
     @Mock
-    private lateinit var interactor: ListingsInteractor
+    private lateinit var interactor: ListingDetailInteractor
 
     @Mock
     private lateinit var resources: Resources
@@ -31,11 +32,11 @@ class ListingsViewModelTest : BaseCoroutinesTest() {
     @Mock
     private lateinit var listingBuilder: ListingBuilder
 
-    private lateinit var viewModel: ListingsViewModel
+    private lateinit var viewModel: ListingDetailViewModel
 
     @BeforeEach
     fun setup() {
-        viewModel = ListingsViewModel(
+        viewModel = ListingDetailViewModel(
             dispatcher = testDispatcher,
             interactor = interactor,
             resources = resources,
@@ -46,16 +47,16 @@ class ListingsViewModelTest : BaseCoroutinesTest() {
     @Test
     fun `loadListings - given interactor returns error - then should return error ui state`() {
         // Given
-        given(interactor.loadListings()).willReturn(ListingsResult.Error)
+        given(interactor.loadListing(1)).willReturn(ListingDetailResult.Error)
         given(resources.getString(R.string.repository_failure)).willReturn("errorMessage")
 
         // When / Then
-        viewModel.loadListings()
-        assertEquals(ListingsUiState.Loading, viewModel.listingsUiState.value)
+        viewModel.loadListing(1)
+        assertEquals(ListingDetailUiState.Loading, viewModel.detailUiState.value)
         scheduler.advanceUntilIdle()
         assertEquals(
-            ListingsUiState.Error(message = "errorMessage"),
-            viewModel.listingsUiState.value
+            ListingDetailUiState.Error(message = "errorMessage"),
+            viewModel.detailUiState.value
         )
     }
 
@@ -64,32 +65,24 @@ class ListingsViewModelTest : BaseCoroutinesTest() {
         // Given
         val item = mock(Listing::class.java)
         val displayModel = mock(ListingDisplayModel::class.java)
-        given(interactor.loadListings()).willReturn(
-            ListingsResult.Success(
-                items = listOf(
-                    item,
-                    item,
-                    item,
-                ),
+        given(interactor.loadListing(1)).willReturn(
+            ListingDetailResult.Success(
+                item = item,
             )
         )
         given(listingBuilder.build(item)).willReturn(displayModel)
 
         // When / Then
-        viewModel.loadListings()
-        assertEquals(ListingsUiState.Loading, viewModel.listingsUiState.value)
+        viewModel.loadListing(1)
+        assertEquals(ListingDetailUiState.Loading, viewModel.detailUiState.value)
         scheduler.advanceUntilIdle()
         assertEquals(
-            ListingsUiState.Ready(
-                items = listOf(
-                    displayModel,
-                    displayModel,
-                    displayModel,
-                )
+            ListingDetailUiState.Ready(
+                item = displayModel,
             ),
-            viewModel.listingsUiState.value
+            viewModel.detailUiState.value
         )
-        then(listingBuilder).should(times(3)).build(item)
+        then(listingBuilder).should().build(item)
         then(listingBuilder).shouldHaveNoMoreInteractions()
     }
 }

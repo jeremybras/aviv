@@ -1,6 +1,7 @@
 package fr.aviv.home.data
 
-import fr.aviv.home.domain.ListingsResult
+import fr.aviv.home.domain.Listing
+import fr.aviv.home.domain.PropertyType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -12,9 +13,9 @@ class ListingsJsonTransformerTest {
     private val transformer = ListingsJsonTransformer()
 
     @Test
-    fun `transformJsonToEntity - given a response with items - then should build result`() {
+    fun `transformJsonToEntity - given a response with a house item - then should build result`() {
         // Given
-        val givenJsonWithHousePropertyType = ListingsJsonResponse.ListingResponse(
+        val givenJsonItem = ListingsJsonResponse.ListingResponse(
             bedrooms = 4,
             city = "Villers-sur-Mer",
             id = 1,
@@ -26,10 +27,7 @@ class ListingsJsonTransformerTest {
             offerType = 1,
             rooms = 8,
         )
-        val givenJsonWithOtherPropertyType = givenJsonWithHousePropertyType.copy(
-            propertyType = "Appartement",
-        )
-        val expectedItem = ListingsResult.Success.Listing(
+        val expectedItem = Listing(
             bedrooms = 4,
             city = "Villers-sur-Mer",
             id = 1,
@@ -37,30 +35,50 @@ class ListingsJsonTransformerTest {
             url = "https://v.seloger.com/s/crop/590x330/visuels/1/7/t/3/17t3fitclms3bzwv8qshbyzh9dw32e9l0p0udr80k.jpg",
             price = 1500000,
             professional = "GSL EXPLORE",
-            propertyType = ListingsResult.Success.PropertyType.HOUSE,
+            propertyType = PropertyType.HOUSE,
             offerType = 1,
             rooms = 8,
         )
 
         // When
-        val result = transformer.transformJsonToEntity(
-            ListingsJsonResponse(
-                items = listOf(
-                    givenJsonWithHousePropertyType,
-                    givenJsonWithOtherPropertyType
-                )
-            )
-        )
+        val result = transformer.transformJsonToEntity(givenJsonItem)
 
         // Then
-        assertEquals(
-            ListingsResult.Success(
-                items = listOf(
-                    expectedItem,
-                    expectedItem.copy(propertyType = ListingsResult.Success.PropertyType.APPARTMENT)
-                )
-            ),
-            result,
+        assertEquals(expectedItem, result)
+    }
+
+    @Test
+    fun `transformJsonToEntity - given a response with an appartment item - then should build result`() {
+        // Given
+        val givenJsonItem = ListingsJsonResponse.ListingResponse(
+            bedrooms = 4,
+            city = "Villers-sur-Mer",
+            id = 1,
+            area = 250,
+            url = "https://v.seloger.com/s/crop/590x330/visuels/1/7/t/3/17t3fitclms3bzwv8qshbyzh9dw32e9l0p0udr80k.jpg",
+            price = 1500000,
+            professional = "GSL EXPLORE",
+            propertyType = "Appartement",
+            offerType = 1,
+            rooms = 8,
         )
+        val expectedItem = Listing(
+            bedrooms = 4,
+            city = "Villers-sur-Mer",
+            id = 1,
+            area = 250,
+            url = "https://v.seloger.com/s/crop/590x330/visuels/1/7/t/3/17t3fitclms3bzwv8qshbyzh9dw32e9l0p0udr80k.jpg",
+            price = 1500000,
+            professional = "GSL EXPLORE",
+            propertyType = PropertyType.APPARTMENT,
+            offerType = 1,
+            rooms = 8,
+        )
+
+        // When
+        val result = transformer.transformJsonToEntity(givenJsonItem)
+
+        // Then
+        assertEquals(expectedItem, result)
     }
 }

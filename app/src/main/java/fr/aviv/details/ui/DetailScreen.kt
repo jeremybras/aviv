@@ -1,28 +1,38 @@
 package fr.aviv.details.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fr.aviv.details.presentation.ListingDetailUiState
+import fr.aviv.details.presentation.ListingDetailViewModel
 
 @Composable
 fun DetailScreen(
     listingId: Int,
 ) {
 
+    val viewModel: ListingDetailViewModel = hiltViewModel()
+    LaunchedEffect(Unit) {
+        viewModel.loadListing(listingId)
+    }
 
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            text = listingId.toString(),
-        )
+    when (val detailUiState = viewModel.detailUiState.collectAsStateWithLifecycle().value) {
+        ListingDetailUiState.Loading -> {
+            DetailContentLoading()
+        }
+        is ListingDetailUiState.Error -> {
+            DetailContentError(
+                errorMessage = detailUiState.message,
+                onRetry = {
+                    viewModel.loadListing(listingId)
+                },
+            )
+        }
+        is ListingDetailUiState.Ready -> {
+            DetailContentReady(
+                listing = detailUiState.item,
+            )
+        }
     }
 }

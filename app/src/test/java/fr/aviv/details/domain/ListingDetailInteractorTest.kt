@@ -1,6 +1,6 @@
-package fr.aviv.home.domain
+package fr.aviv.details.domain
 
-import fr.aviv.home.data.ListingsRepository
+import fr.aviv.details.data.ListingDetailRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -11,22 +11,22 @@ import org.mockito.Mockito.mock
 import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
-class ListingsInteractorTest {
+class ListingDetailInteractorTest {
 
     @Mock
-    private lateinit var repository: ListingsRepository
+    private lateinit var repository: ListingDetailRepository
 
     @InjectMocks
-    private lateinit var interactor: ListingsInteractor
+    private lateinit var interactor: ListingDetailInteractor
 
     @Test
     fun `loadListings - should return repository result`() {
         // Given
-        val response = mock(ListingsResult::class.java)
-        given(repository.loadListings()).willReturn(response)
+        val response = mock(ListingDetailResult::class.java)
+        given(repository.loadListing(1)).willReturn(response)
 
         // When
-        val result = interactor.loadListings()
+        val result = interactor.loadListing(1)
 
         // Then
         assertEquals(response, result)

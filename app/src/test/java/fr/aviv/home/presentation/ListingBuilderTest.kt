@@ -2,7 +2,8 @@ package fr.aviv.home.presentation
 
 import android.content.res.Resources
 import fr.aviv.R
-import fr.aviv.home.domain.ListingsResult
+import fr.aviv.home.domain.Listing
+import fr.aviv.home.domain.PropertyType
 import fr.aviv.utils.CurrencyFormatter
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -30,7 +31,7 @@ class ListingBuilderTest {
         given(currencyFormatter.format(250000)).willReturn("250 000")
     }
 
-    private val defaultGivenItem = ListingsResult.Success.Listing(
+    private val defaultGivenItem = Listing(
         bedrooms = 3,
         city = "Sartrouville",
         id = 3,
@@ -38,31 +39,31 @@ class ListingBuilderTest {
         url = "imageUrl",
         price = 250000,
         professional = "Century",
-        propertyType = ListingsResult.Success.PropertyType.HOUSE,
+        propertyType = PropertyType.HOUSE,
         offerType = 3,
         rooms = 4,
     )
-    private val defaultExpectedDisplayModel = ListingsUiState.Ready.ListingDisplayModel(
+    private val defaultExpectedDisplayModel = ListingDisplayModel(
         id = 3,
         city = "Sartrouville",
         tags = listOf(
-            ListingsUiState.Ready.Tag(
+            TagDisplayModel(
                 image = R.drawable.ic_euro,
                 value = "250 000",
             ),
-            ListingsUiState.Ready.Tag(
+            TagDisplayModel(
                 image = R.drawable.ic_bedroom,
                 value = "3",
             ),
-            ListingsUiState.Ready.Tag(
+            TagDisplayModel(
                 image = R.drawable.ic_blueprint,
                 value = "4",
             ),
-            ListingsUiState.Ready.Tag(
+            TagDisplayModel(
                 image = R.drawable.ic_field,
                 value = "350m",
             ),
-            ListingsUiState.Ready.Tag(
+            TagDisplayModel(
                 image = R.drawable.ic_home,
             ),
         ),
@@ -88,13 +89,13 @@ class ListingBuilderTest {
     fun `build - given an item with an appartment - should return display model with appartment drawable`() {
         // Given
         val givenItem = defaultGivenItem.copy(
-            propertyType = ListingsResult.Success.PropertyType.APPARTMENT,
+            propertyType = PropertyType.APPARTMENT,
         )
         val expectedDisplayModel = defaultExpectedDisplayModel.copy(
             tags = defaultExpectedDisplayModel.tags
                 .subList(0, 4)
                 .plus(
-                    ListingsUiState.Ready.Tag(
+                    TagDisplayModel(
                         image = R.drawable.ic_appartment,
                     )
                 )

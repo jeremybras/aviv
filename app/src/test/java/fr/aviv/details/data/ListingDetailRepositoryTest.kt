@@ -1,12 +1,15 @@
-package fr.aviv.home.data
+package fr.aviv.details.data
 
+import fr.aviv.details.domain.ListingDetailResult
+import fr.aviv.home.data.AvivService
+import fr.aviv.home.data.ListingsJsonResponse
+import fr.aviv.home.data.ListingsJsonTransformer
 import fr.aviv.home.domain.Listing
-import fr.aviv.home.domain.ListingsResult
 import fr.aviv.testutils.enqueue
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -18,7 +21,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @ExtendWith(MockitoExtension::class)
-class ListingsRepositoryTest {
+class ListingDetailRepositoryTest {
 
     private lateinit var server: MockWebServer
 
@@ -27,7 +30,7 @@ class ListingsRepositoryTest {
     @Mock
     private lateinit var transformer: ListingsJsonTransformer
 
-    private lateinit var repository: ListingsRepository
+    private lateinit var repository: ListingDetailRepository
 
     @BeforeEach
     fun setup() {
@@ -38,7 +41,7 @@ class ListingsRepositoryTest {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(AvivService::class.java)
-        repository = ListingsRepository(
+        repository = ListingDetailRepository(
             service = service,
             transformer = transformer,
         )
@@ -50,9 +53,9 @@ class ListingsRepositoryTest {
     }
 
     @Test
-    fun `loadListings - given a successful request - then should return transformers result`() {
+    fun `loadListing - given a successful request - then should return transformers result`() {
         // Given
-        server.enqueue("listings.json")
+        server.enqueue("listing_detail.json")
         val jsonItem = ListingsJsonResponse.ListingResponse(
             bedrooms = 4,
             city = "Villers-sur-Mer",
@@ -69,31 +72,29 @@ class ListingsRepositoryTest {
         given(transformer.transformJsonToEntity(jsonItem)).willReturn(expectedResult)
 
         // When
-        val result = repository.loadListings()
+        val result = repository.loadListing(1)
 
         // Then
         assertEquals(
-            ListingsResult.Success(
-                items = listOf(expectedResult),
-            ),
+            ListingDetailResult.Success(item = expectedResult),
             result,
         )
     }
 
     @Test
-    fun `loadListings - given a successful request with an empty body - then should return Failure`() {
+    fun `loadListing - given a successful request with an empty body - then should return Failure`() {
         // Given
         server.enqueue("listings_empty.json")
 
         // When
-        val result = repository.loadListings()
+        val result = repository.loadListing(1)
 
         // Then
-        assertEquals(ListingsResult.Error, result)
+        assertEquals(ListingDetailResult.Error, result)
     }
 
     @Test
-    fun `loadListings - given an unsuccessful request - then should return Failure`() {
+    fun `loadListing - given an unsuccessful request - then should return Failure`() {
         // Given
         server.enqueue(
             MockResponse()
@@ -102,9 +103,9 @@ class ListingsRepositoryTest {
         )
 
         // When
-        val result = repository.loadListings()
+        val result = repository.loadListing(1)
 
         // Then
-        assertEquals(ListingsResult.Error, result)
+        assertEquals(ListingDetailResult.Error, result)
     }
 }

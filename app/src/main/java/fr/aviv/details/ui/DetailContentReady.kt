@@ -1,4 +1,4 @@
-package fr.aviv.home.ui
+package fr.aviv.details.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,39 +29,17 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import fr.aviv.home.presentation.ListingDisplayModel
 import fr.aviv.home.presentation.TagDisplayModel
-import fr.aviv.ui.DarkOrLightPreview
-
-@Composable
-fun HomeContentReady(
-    listings: List<ListingDisplayModel>,
-    onListing: (Int) -> Unit,
-) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        listings.forEach { listing ->
-            Listing(
-                listing = listing,
-                onListing = onListing,
-            )
-        }
-    }
-}
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalLayoutApi::class)
 @Composable
-private fun Listing(
+fun DetailContentReady(
     listing: ListingDisplayModel,
-    onListing: (Int) -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp)
             .padding(horizontal = 16.dp),
-        onClick = {
-            onListing(listing.id)
-        },
     ) {
         Column {
             Text(
@@ -139,22 +116,4 @@ private fun Tag(tag: TagDisplayModel) {
             )
         }
     }
-}
-
-@DarkOrLightPreview
-@Composable
-private fun HomeContentReadyPreview() {
-    HomeContentReady(
-        listings = listOf(
-            ListingDisplayModel(
-                id = 1,
-                tags = emptyList(),
-                city = "Paris",
-                shouldShowImage = false,
-                imageUrl = "",
-                professional = "Villers-sur-Mer",
-            ),
-        ),
-        onListing = {},
-    )
 }

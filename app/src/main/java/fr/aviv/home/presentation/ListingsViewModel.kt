@@ -30,8 +30,7 @@ class ListingsViewModel @Inject constructor(
             _listings.value = ListingsUiState.Loading
             _listings.value = when (val result = interactor.loadListings()) {
                 is ListingsResult.Success -> ListingsUiState.Ready(
-                    items =
-                    result.items.map { item ->
+                    items = result.items.map { item ->
                         listingBuilder.build(item)
                     },
                 )

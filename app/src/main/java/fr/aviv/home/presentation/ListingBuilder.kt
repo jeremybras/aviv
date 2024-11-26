@@ -2,7 +2,8 @@ package fr.aviv.home.presentation
 
 import android.content.res.Resources
 import fr.aviv.R
-import fr.aviv.home.domain.ListingsResult
+import fr.aviv.home.domain.Listing
+import fr.aviv.home.domain.PropertyType
 import fr.aviv.utils.CurrencyFormatter
 import javax.inject.Inject
 
@@ -11,34 +12,34 @@ class ListingBuilder @Inject constructor(
     private val currencyFormatter: CurrencyFormatter,
 ) {
     fun build(
-        item: ListingsResult.Success.Listing,
-    ): ListingsUiState.Ready.ListingDisplayModel = ListingsUiState.Ready.ListingDisplayModel(
+        item: Listing,
+    ): ListingDisplayModel = ListingDisplayModel(
         id = item.id,
         city = item.city,
         tags = listOf(
-            ListingsUiState.Ready.Tag(
+            TagDisplayModel(
                 image = R.drawable.ic_euro,
                 value = currencyFormatter.format(item.price),
             ),
-            ListingsUiState.Ready.Tag(
+            TagDisplayModel(
                 image = R.drawable.ic_bedroom,
                 value = item.bedrooms.toString(),
             ),
-            ListingsUiState.Ready.Tag(
+            TagDisplayModel(
                 image = R.drawable.ic_blueprint,
                 value = item.rooms.toString(),
             ),
-            ListingsUiState.Ready.Tag(
+            TagDisplayModel(
                 image = R.drawable.ic_field,
                 value = resources.getString(
                     R.string.area,
                     item.area.toString(),
                 ),
             ),
-            ListingsUiState.Ready.Tag(
+            TagDisplayModel(
                 image = when (item.propertyType) {
-                    ListingsResult.Success.PropertyType.HOUSE -> R.drawable.ic_home
-                    ListingsResult.Success.PropertyType.APPARTMENT -> R.drawable.ic_appartment
+                    PropertyType.HOUSE -> R.drawable.ic_home
+                    PropertyType.APPARTMENT -> R.drawable.ic_appartment
                 },
             ),
         ),
