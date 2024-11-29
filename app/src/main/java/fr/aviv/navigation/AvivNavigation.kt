@@ -42,7 +42,10 @@ internal fun AvivNavigation() {
             val args = backStackEntry.arguments
             val listingId = args?.getString(AvivRoutes.PARAM_LISTING_ID)?.toInt() ?: 0
             DetailScreen(
-                listingId = listingId
+                listingId = listingId,
+                onBack = {
+                    navController.navigateUp()
+                },
             )
         }
     }

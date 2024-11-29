@@ -18,18 +18,22 @@ class ListingBuilder @Inject constructor(
         city = item.city,
         tags = listOf(
             TagDisplayModel(
+                title = resources.getString(R.string.tag_price_title),
                 image = R.drawable.ic_euro,
                 value = currencyFormatter.format(item.price),
             ),
             TagDisplayModel(
+                title = resources.getString(R.string.tag_bedrooms_title),
                 image = R.drawable.ic_bedroom,
                 value = item.bedrooms.toString(),
             ),
             TagDisplayModel(
+                title = resources.getString(R.string.tag_rooms_title),
                 image = R.drawable.ic_blueprint,
                 value = item.rooms.toString(),
             ),
             TagDisplayModel(
+                title = resources.getString(R.string.tag_area_title),
                 image = R.drawable.ic_field,
                 value = resources.getString(
                     R.string.area,
@@ -37,6 +41,10 @@ class ListingBuilder @Inject constructor(
                 ),
             ),
             TagDisplayModel(
+                title = when (item.propertyType) {
+                    PropertyType.HOUSE -> resources.getString(R.string.tag_type_title_house)
+                    PropertyType.APPARTMENT -> resources.getString(R.string.tag_type_title_appartment)
+                },
                 image = when (item.propertyType) {
                     PropertyType.HOUSE -> R.drawable.ic_home
                     PropertyType.APPARTMENT -> R.drawable.ic_appartment

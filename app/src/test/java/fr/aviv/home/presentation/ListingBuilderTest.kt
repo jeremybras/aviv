@@ -4,6 +4,8 @@ import android.content.res.Resources
 import fr.aviv.R
 import fr.aviv.home.domain.Listing
 import fr.aviv.home.domain.PropertyType
+import fr.aviv.testutils.lenientGiven
+import fr.aviv.testutils.willReturn
 import fr.aviv.utils.CurrencyFormatter
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -29,6 +31,12 @@ class ListingBuilderTest {
     fun setup() {
         given(resources.getString(R.string.area, "350")).willReturn("350m")
         given(currencyFormatter.format(250000)).willReturn("250 000")
+        given(resources.getString(R.string.tag_area_title)).willReturn("Area")
+        given(resources.getString(R.string.tag_price_title)).willReturn("Price")
+        given(resources.getString(R.string.tag_rooms_title)).willReturn("Rooms")
+        given(resources.getString(R.string.tag_bedrooms_title)).willReturn("Bedrooms")
+        lenientGiven(resources.getString(R.string.tag_type_title_house)).willReturn("House")
+        lenientGiven(resources.getString(R.string.tag_type_title_appartment)).willReturn("Appartment")
     }
 
     private val defaultGivenItem = Listing(
@@ -49,22 +57,27 @@ class ListingBuilderTest {
         tags = listOf(
             TagDisplayModel(
                 image = R.drawable.ic_euro,
+                title = "Price",
                 value = "250 000",
             ),
             TagDisplayModel(
                 image = R.drawable.ic_bedroom,
+                title = "Bedrooms",
                 value = "3",
             ),
             TagDisplayModel(
                 image = R.drawable.ic_blueprint,
+                title = "Rooms",
                 value = "4",
             ),
             TagDisplayModel(
                 image = R.drawable.ic_field,
+                title = "Area",
                 value = "350m",
             ),
             TagDisplayModel(
                 image = R.drawable.ic_home,
+                title = "House",
             ),
         ),
         shouldShowImage = true,
@@ -97,6 +110,7 @@ class ListingBuilderTest {
                 .plus(
                     TagDisplayModel(
                         image = R.drawable.ic_appartment,
+                        title = "Appartment",
                     )
                 )
         )

@@ -25,5 +25,6 @@ data class ListingDisplayModel(
 
 data class TagDisplayModel(
     @DrawableRes val image: Int,
+    val title: String,
     val value: String? = null,
 )
